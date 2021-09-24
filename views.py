@@ -8,16 +8,12 @@ from utilities import DowDogs, User
 # Pointing to correct folder for html templates
 templates = Jinja2Templates('templates')
 
-
 router = fastapi.APIRouter()
-
 
 dow_dog = DowDogs()
 trend = dow_dog.get_trend()
 
 dow_user = User()
-
-
 
 
 @router.get("/")
@@ -51,8 +47,6 @@ def index_post(request: Request, email: str = Form(...), password: str = Form(..
         msg = 'SORRY, THAT EMAIL ALREADY EXISTS IN OUR DATABASE!'
         return templates.TemplateResponse('index.html', context={'request': request, 'msg': msg})
     
-
-
 
 @router.get("/signals")
 def read_current_user(request: Request, username: str = Depends(dow_user.get_current_username)):
