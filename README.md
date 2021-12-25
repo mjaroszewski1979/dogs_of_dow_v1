@@ -21,7 +21,7 @@
 
 -------------------------------------------------
 
-   ![caption](https://github.com/mjaroszewski1979/dogs_of_dow_v1/blob/main/dogs_of_dow.gif)
+   ![caption](https://github.com/mjaroszewski1979/dogs_of_dow_v1/blob/main/dogs_mockup.png)
 
   Live | Code | Docker | Technologies
   ---- | ---- | ------ | ------------
