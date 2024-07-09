@@ -71,9 +71,12 @@ Access the application by opening your browser and going to http://127.0.0.1:800
 
 ### Technologies Used
 * FastAPI: Web framework for building the application.
-* Selenium: For automated browser testing.
+* Pandas: Analyzing, cleaning, exploring, and manipulating data to extract valuable insights.
+* Uvicorn: ASGI web server implementation for async frameworks, ensuring efficient performance.
 * Yahoo Finance API: For fetching financial data.
 * Docker: Containerization of the application.
+* Selenium: For automated browser testing.
+* Pytest: Parametrized testing, fixtures, and assert re-writing for thorough test coverage.
   
 ### Contributing
 * Fork the repository.
