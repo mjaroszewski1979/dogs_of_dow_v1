@@ -1,16 +1,27 @@
+ # Import pandas_datareader for fetching financial data
 import pandas_datareader as pdr
+# Import datetime for handling date and time
 import datetime
+# Import Thread for multi-threading
 from threading import Thread
+# Import HTTPBasicCredentials for security
 from fastapi.security import HTTPBasicCredentials
+# Import check_password_hash for password verification
 from werkzeug.security import check_password_hash
+# Import FastAPI dependencies and exceptions
 from fastapi import Depends, HTTPException, status
+# Import HTTPBasic for HTTP basic authentication
 from fastapi.security import HTTPBasic
 
-
+# Initialize HTTP basic security
 security = HTTPBasic()
 
-# Creating base class for top dow jones stocks
+# Define the DowDogs class to manage top Dow Jones stocks
 class DowDogs:
+    """
+    Initialize the DowDogs class with default start and end dates, and a period.
+    This sets up initial attributes, including start and end dates, period, results, markets, and tickers.
+    """
     def __init__(self, start = datetime.datetime(2020, 1, 1), end = datetime.datetime.now(), period=125):
         self.start = start
         self.end = end
@@ -18,7 +29,7 @@ class DowDogs:
 
         self. results = []
         
-        # Dogs of dow companies names and associated tickers
+        # Define the names and tickers of the Dogs of the Dow companies
         self.markets = {
             'MMM' : '3M',
             'AMGN' : 'AMGEN',
@@ -34,14 +45,17 @@ class DowDogs:
         }
         self.tickers = ['MMM', 'AMGN', 'CVX', 'CSCO', 'KO', 'DOW', 'IBM', 'MRK', 'VZ', 'WBA']
 
-    # Fetching data using Yahoo Finance API to establish current trend for a given symbol 
     def get_data(self, symbol):
+        """
+        Fetch data using the Yahoo Finance API to establish the current trend for a given symbol.
+        This method calculates the trend score based on the comparison of the most recent data point to the prices over the past year.
+        """
 
         self.data = pdr.get_data_yahoo(symbol, self.start, self.end)
         total = []
         nums = range(2, 252)
         
-        # Comparing most recent data point to price ranging from 2 to 252 days ( trading year )
+        # Compare the most recent data point to the prices from 2 to 252 days ago
         for num in nums:
             if self.data['Adj Close'][-1] > self.data['Adj Close'][-num]:
                 result = 1
@@ -49,7 +63,7 @@ class DowDogs:
                 result = -1
             total.append(result)
             
-        # Getting a total score
+        # Calculate the total score
         total = (sum(total))
         
         if total > self.period:
@@ -65,13 +79,16 @@ class DowDogs:
             
         result = [score, self.markets[symbol]]
         
-        # Checking for existing result
+        # Check for existing result and update results list
         if result not in self.results:
             self.results.append(result)
             self.results.sort(key=lambda x: x[1])
 
-    # Assigning each use of Yahoo Finance API to individual thread 
     def get_trend(self):
+        """
+        Assign each use of the Yahoo Finance API to an individual thread to fetch data concurrently.
+        This method starts threads for each ticker and returns the results for all stocks.
+        """
 
         threads = []
 
@@ -84,38 +101,43 @@ class DowDogs:
         for thread in threads:
             thread.join()
 
-        # Returning results for all stocks
+        # Return the results for all stocks
         return self.results
 
-# Creating user class with basic credentials - username and password
+# Define the User class to manage user credentials
 class User:
+    """
+    Initialize the User class with an empty users dictionary to store email and password hashes.
+    """
     def __init__ (self):
         self.users = {'email': [], 'pass_hash': []}
 
-    # Getting current user credentials using HTTPBasicCredentials and HTTPBasic
     def get_current_username(self, credentials: HTTPBasicCredentials = Depends(security)):
-
+        """
+        Get the current user's username using HTTPBasicCredentials and validate the credentials.
+        This method checks the provided email and password, raising an exception if they are incorrect.
+        """
 
         usr_email = credentials.username
         usr_pass = credentials.password
 
-        # Checking for existing record
+        # Check for existing record
         if usr_email in self.users['email']:
             item = self.users['email'].index(usr_email)
             pass_hash = self.users['pass_hash'][item]
 
-            # Ensuring that provided password match stored password hash
+            # Verify the provided password matches the stored password hash
             result = check_password_hash(pass_hash, usr_pass)
             if result == True:
                 return credentials.username
 
-            # Raising an exception when password is incorrect
+            # Raise an exception if the password is incorrect
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect email or password",
                 headers={"WWW-Authenticate": "Basic"},)
 
-        # Raising an exception when provided email is incorrect
+        # Raise an exception if the email is incorrect
         raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Incorrect email or password",
