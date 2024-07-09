@@ -1,15 +1,23 @@
+# Import the FastAPI module
 import fastapi
-import views
+# Import StaticFiles to serve static files
 from fastapi.staticfiles import StaticFiles
+# Import the views module containing API route definitions
+import views
 
-# Creating an instance of FastAPI application
+# Create an instance of the FastAPI application
 app = fastapi.FastAPI()
 
-# Managing static files 
+# Mount the static files directory
+# This serves static files from the "static" directory at the "/static" URL path
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Adding each APIRouter to the main FastAPI application
 def configure():
+    """
+    Add each APIRouter from the views module to the main FastAPI application.
+    This function includes all the routes defined in the views.router.
+    """
     app.include_router(views.router)
 
+# Call the configure function to include the routes
 configure()
