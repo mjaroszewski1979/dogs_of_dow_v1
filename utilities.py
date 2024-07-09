@@ -1,4 +1,4 @@
- # Import pandas_datareader for fetching financial data
+# Import pandas_datareader for fetching financial data
 import pandas_datareader as pdr
 # Import datetime for handling date and time
 import datetime
