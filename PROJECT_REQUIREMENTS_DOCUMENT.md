@@ -42,6 +42,33 @@ Requirement | Condition | Expected Outcome | Test Case
 ----------- | --------- | ---------------- | ---------
 The User class must have the users attribute correctly initialized. | When checking the users attribute of an instance of User. | The users attribute should not be None. | test_dow_user
 
+## Selenium Tests
+
+### Home Page Requirements
+
+Requirement | Condition | Expected Outcome | Test Case
+----------- | --------- | ---------------- | ---------
+The home page must display the correct title. | When the home page is accessed. | The title of the page should be "MJ TRADING - HOME". | is_title_matches
+The About link on the home page must navigate to the About page correctly. | When the About link is clicked from the home page. | The title of the page should change to "MJ TRADING - ABOUT". | is_about_link_works
+The Home link on the About page must navigate back to the home page correctly. | When the Home link is clicked from the About page. | The title of the page should change back to "MJ TRADING - HOME". | is_home_link_works
+The registration form on the home page must work correctly with valid inputs. | When the registration form is submitted with a valid email and password. | The registration should be successful, and a success message should appear. The success message should contain the text "THANK YOU <email> FOR REGISTERING!". | is_register_form_works
+The Signals link on the home page must navigate to the Signals page correctly. | When the Signals link is clicked from the home page. | The page should navigate to the Signals page. | click_signals_link
+
+### About Page Requirements
+
+Requirement | Condition | Expected Outcome | Test Case
+----------- | --------- | ---------------- | ---------
+The About page must display the correct title. | When the About page is accessed. | The title of the page should be "MJ TRADING - ABOUT". | is_title_matches
+The About page must display the correct heading. | When the About page is accessed. | The heading of the page should be displayed correctly. The heading should contain the text "DOGS OF THE DOW IS AN INVESTMENT STRATEGY THAT ATTEMPTS TO BEAT THE DOW JONES". | is_about_heading_displayed
+
+### Signals Page Requirements
+
+Requirement | Condition | Expected Outcome | Test Case
+----------- | --------- | ---------------- | ---------
+The Signals page must display the correct title. | When the Signals page is accessed. | The title of the page should be "MJ TRADING - SIGNALS". | is_signals_title_matches
+
+
+
 
 
 
